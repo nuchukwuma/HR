@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
+//import { useAuth } from '../hooks/useAuth';
 import { api } from '../utils/api';
 import { Alert, Button, Card, EmptyState, PageHeader } from '../components/ui';
 import { tableClass, tdClass, thClass } from '../utils/styles';
@@ -11,7 +11,7 @@ function formatDate(value) {
 }
 
 function ActivityLog() {
-  const { user } = useAuth();
+  //const { user } = useAuth();
   const [activities, setActivities] = useState([]);
   const [error, setError] = useState('');
 
@@ -30,16 +30,11 @@ function ActivityLog() {
     loadActivities();
   }, [loadActivities]);
 
-  const subtitle =
-    user.role === 'hr'
-      ? 'This log shows request activity across the company.'
-      : user.role === 'manager'
-        ? 'This log shows activity for requests assigned to you and requests you submitted.'
-        : 'This log shows activity for your own requests.';
+
 
   return (
     <div>
-      <PageHeader title="Activity Log" subtitle={subtitle}>
+      <PageHeader title="Activity Log" >
         <Button variant="secondary" onClick={loadActivities}>Refresh activity</Button>
       </PageHeader>
       {error && <Alert>Error: {error}</Alert>}

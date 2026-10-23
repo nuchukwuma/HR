@@ -18,6 +18,8 @@ If you are developing a production application, we recommend using TypeScript wi
 
 ## Deployment environment
 
+The Vercel frontend includes a rewrite that serves the React app for client-side routes, so directly opening or refreshing paths such as `/shifts` works.
+
 For the Render frontend service, set `VITE_API_URL` to the backend service's public origin, without an `/api` suffix (for example, `https://your-backend.onrender.com`). Vite reads this value when it builds the site, so redeploy the frontend after changing it.
 
 For the backend service, set `CLIENT_URL` to the exact frontend origin, such as `https://hr-e4c0.onrender.com`. Multiple allowed origins can be comma-separated. Restart or redeploy the backend after changing this value. The same setting controls API CORS, Socket.IO CORS, and the origin used for invitation links.

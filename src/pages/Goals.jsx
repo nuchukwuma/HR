@@ -144,7 +144,7 @@ function Goals() {
 
   return (
     <div>
-      <PageHeader title="Goals" subtitle="Set a target, then update your progress as you go." />
+      <PageHeader title="Goals"  />
       {error && <Alert>{error}</Alert>}
 
       <Card title="New goal">

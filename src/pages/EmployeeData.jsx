@@ -87,16 +87,11 @@ function EmployeeData() {
   const [searchParams] = useSearchParams();
   const isHr = user.role === 'hr';
 
-  const subtitle = isHr
-    ? 'Everyone in the company.'
-    : user.role === 'manager'
-      ? 'You and the people on your team.'
-      : 'Your own details.';
+
 
   return (
     <ResourcePage
       title="Employee Data"
-      subtitle={subtitle}
       noun="employee"
       listPath="/employees"
       columns={columns}
