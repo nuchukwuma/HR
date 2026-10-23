@@ -22,7 +22,7 @@ function Dashboard() {
       api('/requests/activity'),
       api('/profiles/me'),
     ]).then(([shifts, activities, profile]) => {
-      if (profile.status === 'fulfilled') setPhotoUrl(profile.value.profile.profilePhoto);
+      if (profile.status === 'fulfilled') setPhotoUrl(profile.value.profile?.profilePhoto || null);
 
       const shiftList = shifts.status === 'fulfilled' ? shifts.value.shifts : [];
       setUpcomingShifts(
