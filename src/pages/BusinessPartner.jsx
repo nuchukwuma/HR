@@ -185,7 +185,6 @@ export default function BusinessPartnerPage() {
 
       <PageHeader
         title="Business Partners"
-        subtitle="Manage partner assignments, team coverage, and contact details."
       >
         <Button onClick={() => navigate('/partners/new')}>Add business partner</Button>
       </PageHeader>

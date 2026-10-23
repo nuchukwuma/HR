@@ -52,13 +52,13 @@ function Dashboard() {
 
   // Everything else worth a shortcut to
   const moreLinks = [
-    { name: 'Chat', path: '/chat', text: 'Talk with your team or the whole company.' },
-    { name: 'Posts', path: '/posts', text: 'Read announcements from HR and your manager.' },
-    { name: 'Goals', path: '/goals', text: 'Set goals and track how far along you are.' },
-    { name: 'Activity Log', path: '/activity-log', text: 'See what has happened to your requests.' },
+    { name: 'Chat', path: '/chat' },
+    { name: 'Posts', path: '/posts'},
+    { name: 'Goals', path: '/goals' },
+    { name: 'Activity Log', path: '/activity-log' },
     ...(isBoss
       ? [
-          { name: 'Business Partners', path: '/partners', text: 'Companies we work with and their contracts.' },
+          { name: 'Business Partners', path: '/partners' },
         ]
       : []),
   ];

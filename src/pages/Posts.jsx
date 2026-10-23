@@ -109,7 +109,7 @@ function Posts() {
 
   return (
     <div>
-      <PageHeader title="Bulletin board" subtitle="Announcements for the company and for your team." />
+      <PageHeader title="Bulletin board" />
       {error && <Alert>{error}</Alert>}
 
       {canPost && <PostForm onCreated={reload} />}

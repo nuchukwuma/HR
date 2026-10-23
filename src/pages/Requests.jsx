@@ -166,7 +166,7 @@ function Requests() {
 
   return (
     <div>
-      <PageHeader title="Requests" subtitle="Ask for leave, equipment or documents, and follow what happens next." />
+      <PageHeader title="Requests"/>
       {error && <Alert>Error: {error}</Alert>}
       {message && <Alert type="success">{message}</Alert>}
 

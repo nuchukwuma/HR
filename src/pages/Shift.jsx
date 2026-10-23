@@ -57,7 +57,7 @@ function Shifts() {
 
   return (
     <div>
-      <PageHeader title="Shifts" subtitle="Your schedule. Click a shift to see details, clock in or out, or ask for a swap.">
+      <PageHeader title="Shifts" >
         {canManage && (
           <Button onClick={() => setShowForm(!showForm)}>{showForm ? 'Close' : 'Add shift'}</Button>
         )}

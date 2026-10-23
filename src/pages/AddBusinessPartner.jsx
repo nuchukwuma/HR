@@ -68,7 +68,7 @@ export default function AddBusinessPartner() {
 
   return (
     <div>
-      <PageHeader title="Add business partner" subtitle="Add a partner and their team coverage details.">
+      <PageHeader title="Add business partner" >
         <Button variant="secondary" onClick={() => navigate('/partners')}>Cancel</Button>
       </PageHeader>
 
