@@ -130,11 +130,9 @@ export default function BusinessPartnerPage() {
     };
 
     try {
-      const result = currentPartner
-        ? await businessPartnerApi.update(currentPartner._id, payload)
-        : await businessPartnerApi.create(payload);
+      const result = await businessPartnerApi.update(currentPartner._id, payload);
       if (!result.success) throw new Error(result.message || 'Could not save business partner');
-      showToast(currentPartner ? 'Business partner updated' : 'Business partner added');
+      showToast('Business partner updated');
       setIsFormOpen(false);
       await fetchPartners();
     } catch (error) {
