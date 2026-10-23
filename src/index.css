@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* If your project uses Tailwind 3, replace the line above with these three lines:
+   @tailwind base;
+   @tailwind components;
+   @tailwind utilities;
+*/
+
+body {
+  margin: 0;
+  background-color: #f5f9ff;
+  color: #1f2937;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* The shift calendar (FullCalendar) in the same blue as the rest of the app */
+.fc {
+  --fc-button-bg-color: #2563eb;
+  --fc-button-border-color: #2563eb;
+  --fc-button-hover-bg-color: #1d4ed8;
+  --fc-button-hover-border-color: #1d4ed8;
+  --fc-button-active-bg-color: #1e40af;
+  --fc-button-active-border-color: #1e40af;
+  --fc-event-bg-color: #2563eb;
+  --fc-event-border-color: #2563eb;
+  --fc-today-bg-color: #eff6ff;
+  --fc-border-color: #e5e7eb;
+  font-size: 0.875rem;
+}
+.fc .fc-toolbar-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
