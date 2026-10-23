@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { businessPartnerApi } from '../utils/api';
 import { inputClass, labelClass, tableClass, thClass, tdClass } from '../utils/styles';
 import { Alert, Avatar, Badge, Button, Card, EmptyState, PageHeader } from '../components/ui';
@@ -30,14 +30,14 @@ const statusTone = (status) => {
 };
 
 export default function BusinessPartnerPage() {
-  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedDept, setSelectedDept] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [viewMode, setViewMode] = useState('table');
-  const [isFormOpen, setIsFormOpen] = useState(() => searchParams.get('create') === '1');
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [currentPartner, setCurrentPartner] = useState(null);
@@ -86,20 +86,6 @@ export default function BusinessPartnerPage() {
       active = false;
     };
   }, [getPartners, showToast]);
-
-  const stats = useMemo(() => ({
-    total: partners.length,
-    active: partners.filter((partner) => partner.status === 'Active').length,
-    leave: partners.filter((partner) => partner.status === 'On Leave').length,
-    departments: new Set(partners.map((partner) => partner.department)).size,
-  }), [partners]);
-
-  const openCreate = () => {
-    setCurrentPartner(null);
-    setFormData({ ...blankForm });
-    setFormErrors({});
-    setIsFormOpen(true);
-  };
 
   const openEdit = (partner) => {
     setCurrentPartner(partner);
@@ -203,22 +189,8 @@ export default function BusinessPartnerPage() {
         title="Business Partners"
         subtitle="Manage partner assignments, team coverage, and contact details."
       >
-        <Button onClick={openCreate}>Add business partner</Button>
+        <Button onClick={() => navigate('/partners/new')}>Add business partner</Button>
       </PageHeader>
-
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          { label: 'Total partners', value: stats.total },
-          { label: 'Active partners', value: stats.active },
-          { label: 'On leave', value: stats.leave },
-          { label: 'Departments covered', value: stats.departments },
-        ].map((stat) => (
-          <Card key={stat.label} className="mb-0">
-            <p className="text-sm text-blue-900/60">{stat.label}</p>
-            <p className="mt-1 text-3xl font-bold text-blue-950">{stat.value}</p>
-          </Card>
-        ))}
-      </div>
 
       <Card>
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
@@ -350,11 +322,11 @@ export default function BusinessPartnerPage() {
         </div>
       )}
 
-      {isFormOpen && (
+      {isFormOpen && currentPartner && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-blue-950/40 p-4">
           <Card className="my-auto w-full max-w-xl">
             <h2 className="mb-4 text-lg font-semibold text-blue-950">
-              {currentPartner ? 'Edit business partner' : 'Add business partner'}
+              Edit business partner
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>

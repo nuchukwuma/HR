@@ -13,6 +13,7 @@ import Posts from './pages/Posts';
 import Goals from './pages/Goals';
 import EmployeeData from './pages/EmployeeData';
 import BusinessPartnerPage from './pages/BusinessPartner';
+import AddBusinessPartner from './pages/AddBusinessPartner';
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
               <Route path="/employee-data" element={<EmployeeData />} />
               <Route path="/employees" element={<Navigate to="/employee-data" replace />} />
               <Route path="/partners" element={<BusinessPartnerPage />} />
+              <Route path="/partners/new" element={<AddBusinessPartner />} />
               {/* add the other module pages here as you build them */}
             </Route>
           </Route>

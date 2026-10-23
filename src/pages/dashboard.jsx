@@ -4,22 +4,11 @@ import { useAuth } from '../hooks/useAuth';
 import { api } from '../utils/api';
 import { Avatar, Badge, Button, Card, EmptyState, PageHeader } from '../components/ui';
 
-// A small number + label box, like "Employees  12"
-function StatTile({ label, value, loading }) {
-  return (
-    <div className="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
-      <p className="text-sm text-blue-900/60">{label}</p>
-      <p className="mt-1 text-3xl font-bold text-blue-950">{loading ? '—' : value}</p>
-    </div>
-  );
-}
-
 function Dashboard() {
   const { user } = useAuth();
   const isBoss = user.role === 'manager' || user.role === 'hr';
 
   const [photoUrl, setPhotoUrl] = useState(null);
-  const [stats, setStats] = useState({ team: null, pending: null, todayShifts: null, goals: null });
   const [upcomingShifts, setUpcomingShifts] = useState([]);
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,34 +16,16 @@ function Dashboard() {
   useEffect(() => {
     const now = new Date();
     const weekAhead = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
-    const todayEnd = new Date(now);
-    todayEnd.setHours(23, 59, 59, 999);
 
-    // Run every lookup at once. Promise.allSettled means one failing call
-    // (e.g. an employee isn't allowed to see /requests/inbox) doesn't break the rest.
+    // Independent dashboard sections should still render if one request fails.
     Promise.allSettled([
-      api('/employees'),
-      isBoss ? api('/requests/inbox') : api('/requests/mine'),
       api(`/shifts?from=${now.toISOString()}&to=${weekAhead.toISOString()}`),
-      api('/goals'),
       api('/requests/activity'),
       api('/profiles/me'),
-    ]).then(([employees, requests, shifts, goals, activities, profile]) => {
+    ]).then(([shifts, activities, profile]) => {
       if (profile.status === 'fulfilled') setPhotoUrl(profile.value.profile.profilePhoto);
 
-      const pendingCount = requests.status === 'fulfilled'
-        ? requests.value.requests.filter((r) => r.status === 'submitted' || r.status === 'in-review').length
-        : null;
       const shiftList = shifts.status === 'fulfilled' ? shifts.value.shifts : [];
-      const todayCount = shiftList.filter((s) => new Date(s.startTime) <= todayEnd).length;
-      const openGoals = goals.status === 'fulfilled' ? goals.value.goals.filter((g) => g.status !== 'completed').length : null;
-
-      setStats({
-        team: employees.status === 'fulfilled' ? employees.value.items.length : null,
-        pending: pendingCount,
-        todayShifts: todayCount,
-        goals: openGoals,
-      });
       setUpcomingShifts(
         shiftList
           .slice()
@@ -70,7 +41,7 @@ function Dashboard() {
   const quickActions = isBoss
     ? [
         { label: '+ Add employee', path: '/employee-data?create=1' },
-        { label: '+ Add business partner', path: '/partners?create=1' },
+        { label: '+ Add business partner', path: '/partners/new' },
         { label: '+ Post an update', path: '/posts' },
       ]
     : [
@@ -102,14 +73,6 @@ function Dashboard() {
         <Badge tone="blue">{user.role}</Badge>
         <Link to="/employee-data"><Avatar src={photoUrl} name={displayName} /></Link>
       </PageHeader>
-
-      {/* Stat tiles */}
-      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatTile label={isBoss ? 'People you manage' : 'People you can see'} value={stats.team} loading={loading} />
-        <StatTile label="Pending requests" value={stats.pending} loading={loading} />
-        <StatTile label="Shifts this week" value={stats.todayShifts} loading={loading} />
-        <StatTile label="Open goals" value={stats.goals} loading={loading} />
-      </div>
 
       <div className="mb-6 grid gap-4 lg:grid-cols-2">
         {/* Upcoming shifts */}
