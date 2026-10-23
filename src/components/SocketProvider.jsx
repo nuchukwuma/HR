@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { SocketContext } from '../context/SocketContext';
-
+import { API_SERVER_URL } from '../utils/config';
 
 function SocketProvider({ children }) {
 
   const [socket] = useState(() =>
-    io(import.meta.env.VITE_API_URL, { withCredentials: true, autoConnect: false })
+    io(API_SERVER_URL, { withCredentials: true, autoConnect: false })
   );
 
   useEffect(() => {
