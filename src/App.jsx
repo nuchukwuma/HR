@@ -14,6 +14,7 @@ import Goals from './pages/Goals';
 import EmployeeData from './pages/EmployeeData';
 import BusinessPartnerPage from './pages/BusinessPartner';
 import AddBusinessPartner from './pages/AddBusinessPartner';
+import Teams from './pages/Teams';
 
 const App = () => {
   return (
@@ -38,6 +39,9 @@ const App = () => {
               <Route path="/employees" element={<Navigate to="/employee-data" replace />} />
               <Route path="/partners" element={<BusinessPartnerPage />} />
               <Route path="/partners/new" element={<AddBusinessPartner />} />
+              <Route element={<ProtectedRoute allowedRoles={['manager', 'hr']} />}>
+                <Route path="/teams" element={<Teams />} />
+              </Route>
               {/* add the other module pages here as you build them */}
             </Route>
           </Route>

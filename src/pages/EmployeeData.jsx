@@ -41,6 +41,7 @@ const addFields = [
     label: 'Role',
     type: 'select',
     required: true,
+    resetFieldsOnValue: { manager: ['managerId'] },
     options: [
       { value: 'employee', label: 'Employee' },
       { value: 'manager', label: 'Manager' },
@@ -54,7 +55,8 @@ const addFields = [
   { name: 'jobTitle', label: 'Job title', required: true },
   { name: 'employmentType', label: 'Employment type', type: 'select', required: true, options: employmentTypes },
   { name: 'teamId', label: 'Team', type: 'select', optionsFrom: { path: '/teams', listKey: 'teams', label: 'name' } },
-  { name: 'managerId', label: 'Manager', type: 'select', optionsFrom: { path: '/employees/managers', label: 'email' } },
+  { name: 'managerId', label: 'Manager', type: 'select', optionsFrom: { path: '/employees/managers', label: 'email' }, visibleWhen: (values) => values.role !== 'manager' },
+  { name: 'profilePhoto', label: 'Profile photo (optional)', type: 'file', accept: 'image/jpeg,image/png,image/webp', full: true },
 ];
 
 // HR: the form for EDITING a profile

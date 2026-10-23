@@ -119,7 +119,6 @@ function Goals() {
       .catch((err) => setError(err.message));
   }, [reloadKey]);
 
-  // Managers and HR can choose whose goal it is
   useEffect(() => {
     if (!canAssign) return;
     api('/shifts/people').then((data) => setPeople(data.people)).catch(() => {});
@@ -155,7 +154,7 @@ function Goals() {
           </div>
 
           <div>
-            <label htmlFor="goal-target" className={labelClass}>Target (the number that means "done")</label>
+            <label htmlFor="goal-target" className={labelClass}>Target</label>
             <input
               id="goal-target"
               type="number"
@@ -167,7 +166,7 @@ function Goals() {
           </div>
 
           <div>
-            <label htmlFor="goal-due" className={labelClass}>Due date (optional)</label>
+            <label htmlFor="goal-due" className={labelClass}>Due date </label>
             <input
               id="goal-due"
               type="date"

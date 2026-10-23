@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { api } from '../utils/api';
-import { Avatar, Badge, Button, Card, EmptyState, PageHeader } from '../components/ui';
+import { Avatar, Button, Card, EmptyState, PageHeader } from '../components/ui';
 
 function Dashboard() {
   const { user } = useAuth();
@@ -17,7 +17,6 @@ function Dashboard() {
     const now = new Date();
     const weekAhead = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-    // Independent dashboard sections should still render if one request fails.
     Promise.allSettled([
       api(`/shifts?from=${now.toISOString()}&to=${weekAhead.toISOString()}`),
       api('/requests/activity'),
@@ -37,7 +36,6 @@ function Dashboard() {
     });
   }, [isBoss]);
 
-  // Where the quick-action buttons go
   const quickActions = isBoss
     ? [
         { label: '+ Add employee', path: '/employee-data?create=1' },
@@ -50,7 +48,6 @@ function Dashboard() {
         { label: 'Open chat', path: '/chat' },
       ];
 
-  // Everything else worth a shortcut to
   const moreLinks = [
     { name: 'Chat', path: '/chat' },
     { name: 'Posts', path: '/posts'},
@@ -63,14 +60,13 @@ function Dashboard() {
       : []),
   ];
 
-  // "ada@example.com" becomes "Ada"
   const firstName = user.email.split('@')[0];
   const displayName = firstName.charAt(0).toUpperCase() + firstName.slice(1);
 
   return (
     <div>
       <PageHeader title={`Welcome, ${displayName}`} subtitle={user.email}>
-        <Badge tone="blue">{user.role}</Badge>
+        {/* <Badge tone="blue">{user.role}</Badge> */}
         <Link to="/employee-data"><Avatar src={photoUrl} name={displayName} /></Link>
       </PageHeader>
 

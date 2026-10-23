@@ -5,6 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 const navItems = [
   { name: 'Dashboard', path: '/dashboard' },
   { name: 'Employee Data', path: '/employee-data' },
+  { name: 'Teams', path: '/teams' },
   { name: 'Business Partners', path: '/partners' },
   { name: 'Shift', path: '/shifts' },
   { name: 'Requests', path: '/requests' },
@@ -29,7 +30,7 @@ function Sidebar() {
       <div className="flex items-center justify-between mb-8 px-2">
         {!isCollapsed && (
           <span className="text-xl font-extrabold text-blue-600 tracking-tight">
-            HR.M
+            Human Resources HR.M
           </span>
         )}
         <button
@@ -54,7 +55,7 @@ function Sidebar() {
 
       <nav className="flex-1 overflow-y-auto">
         <ul className="space-y-1">
-          {navItems.map((item) => {
+          {navItems.filter((item) => item.path !== '/teams' || ['manager', 'hr'].includes(user.role)).map((item) => {
 
         const isActive = location.pathname === item.path;
 
@@ -83,7 +84,6 @@ function Sidebar() {
 
       {!isCollapsed && (
         <div className="mt-2 rounded-lg bg-blue-50 px-3 py-2">
-          <p className="truncate text-sm font-medium text-blue-950">{user.email}</p>
           <p className="text-xs capitalize text-blue-900/60">{user.role}</p>
         </div>
       )}

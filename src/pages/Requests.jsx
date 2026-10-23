@@ -23,7 +23,6 @@ function formatStatus(status) {
   return (status || 'submitted').replace('-', ' ');
 }
 
-// Each status gets its own badge colour
 const statusTones = {
   submitted: 'gray',
   'in-review': 'blue',
@@ -201,10 +200,10 @@ function Requests() {
                 onChange={changeField}
                 className="h-4 w-4 rounded border-blue-200 text-blue-600"
               />
-              This request is about my manager (send it to HR)
+              about manager
             </label>
             <p className="mt-2 text-xs text-blue-900/60">
-              Complaints and incidents are sent to HR. Other requests go to your assigned manager.
+              Complaints and incidents are sent to HR. Others go to your assigned manager.
             </p>
           </div>
           <div className="sm:col-span-2">

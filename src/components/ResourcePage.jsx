@@ -21,6 +21,13 @@ const setValue = (object, path, value) => {
   return result;
 };
 
+const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = () => reject(new Error('Could not read that file'));
+  reader.readAsDataURL(file);
+});
+
 function ResourceForm({ fields, initialValues, onSubmit, onCancel, submitLabel, optionsByPath }) {
   const [values, setValues] = useState(initialValues);
   const [error, setError] = useState('');
@@ -43,17 +50,41 @@ function ResourceForm({ fields, initialValues, onSubmit, onCancel, submitLabel, 
     <form onSubmit={submit} className="space-y-4">
       {error && <Alert>{error}</Alert>}
       <div className="grid gap-4 sm:grid-cols-2">
-        {fields.map((field) => (
+        {fields.filter((field) => !field.visibleWhen || field.visibleWhen(values)).map((field) => (
           <div key={field.name} className={field.full ? 'sm:col-span-2' : ''}>
             <label htmlFor={`resource-${field.name}`} className={labelClass}>{field.label}</label>
-            {field.type === 'select' ? (
+            {field.type === 'file' ? (
+              <input
+                id={`resource-${field.name}`}
+                type="file"
+                accept={field.accept}
+                onChange={async (event) => {
+                  const file = event.target.files?.[0];
+                  event.target.value = '';
+                  if (!file) return;
+                  try {
+                    const dataUrl = await readFileAsDataUrl(file);
+                    setValues((current) => setValue(current, field.name, dataUrl));
+                    setError('');
+                  } catch (err) {
+                    setError(err.message);
+                  }
+                }}
+                className={inputClass}
+              />
+            ) : field.type === 'select' ? (
               <select
                 id={`resource-${field.name}`}
                 required={field.required}
                 value={getValue(values, field.name)}
-                onChange={(event) =>
-                  setValues((current) => setValue(current, field.name, event.target.value))
-                }
+                onChange={(event) => setValues((current) => {
+                  let next = setValue(current, field.name, event.target.value);
+                  const resetFields = field.resetFieldsOnValue?.[event.target.value] || [];
+                  resetFields.forEach((path) => {
+                    next = setValue(next, path, '');
+                  });
+                  return next;
+                })}
                 className={inputClass}
               >
                 <option value="">Select...</option>
